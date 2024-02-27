@@ -1,5 +1,7 @@
 package dev.jorgealejandro.tm.discoveryapi.challenge.util
 
+import android.graphics.Bitmap
+import android.widget.ImageView
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.CombinedLoadStates
@@ -7,6 +9,8 @@ import androidx.paging.LoadState
 import androidx.paging.Pager
 import androidx.paging.PagingSource
 import androidx.paging.RemoteMediator
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import dev.jorgealejandro.tm.discoveryapi.challenge.ui.states.DataPresentationState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -91,3 +95,21 @@ fun Flow<CombinedLoadStates>.asRemotePresentationState(): Flow<DataPresentationS
             }
         }
     }.distinctUntilChanged()
+
+
+/**
+ * [ImageView.setImage]
+ * Sets the image of the ImageView using Glide with the given String URL.
+ *
+ * @param path The Bitmap to be set as the image.
+ */
+fun ImageView.setImage(path: String?) {
+    path?.let {
+        Glide.with(this.context)
+            .asBitmap()
+            .load(path)
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .into(this)
+    }
+}

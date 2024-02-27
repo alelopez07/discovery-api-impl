@@ -10,9 +10,9 @@ class EventLoadStateAdapter(
 ) : LoadStateAdapter<EventLoadStateViewHolder>() {
     override fun onBindViewHolder(
         holder: EventLoadStateViewHolder,
-        state: LoadState
+        loadState: LoadState
     ) {
-        holder.bind(state)
+        holder.bind(loadState)
     }
 
     override fun onCreateViewHolder(

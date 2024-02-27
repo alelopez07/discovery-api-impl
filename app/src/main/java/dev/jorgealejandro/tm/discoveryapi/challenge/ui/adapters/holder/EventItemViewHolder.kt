@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import dev.jorgealejandro.tm.discoveryapi.challenge.base.BaseViewModel
 import dev.jorgealejandro.tm.discoveryapi.challenge.databinding.ItemEventBinding
 import dev.jorgealejandro.tm.discoveryapi.challenge.ui.models.HomeViewModel
+import dev.jorgealejandro.tm.discoveryapi.challenge.util.setImage
 import dev.jorgealejandro.tm.discoveryapi.core.dto.models.EventUiItem
 
 class EventItemViewHolder(
@@ -20,6 +21,9 @@ class EventItemViewHolder(
         item: EventUiItem?
     ) {
         if (viewModel !is HomeViewModel) return
-        binding.textSeparatorDescription.text = (item as EventUiItem.EventItem).item.name
+        val model = (item as EventUiItem.EventItem)
+        binding.textTitleEvent.text = model.item.name
+        binding.textDateEvent.text = model.item.type
+        binding.imageEvent.setImage(model.item.url)
     }
 }

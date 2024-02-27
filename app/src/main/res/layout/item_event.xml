@@ -4,18 +4,92 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingVertical="8dp"
-    android:background="@android:color/black">
+    android:layout_marginTop="@dimen/margin_extra_small"
+    android:background="@android:color/transparent"
+    android:padding="@dimen/padding_small">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardImageItemContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_small"
+        app:cardBackgroundColor="@color/colorGray50"
+        app:cardCornerRadius="@dimen/uiSize_10dp"
+        app:cardElevation="@dimen/uiSize_2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imageEvent"
+                android:layout_width="124dp"
+                android:layout_height="124dp"
+                android:contentDescription="@string/event_media_content_description"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                tools:srcCompat="@tools:sample/avatars" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/textSeparatorDescription"
-        android:layout_width="0dp"
+        android:id="@+id/textTitleEvent"
+        android:layout_width="@dimen/uiSize_0dp"
         android:layout_height="wrap_content"
-        android:padding="2dp"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
+        android:layout_marginHorizontal="@dimen/margin_small"
+        android:contentDescription="@string/event_title_content_description"
+        android:padding="@dimen/padding_extra_small"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/textSize_18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="10000+ stars" />
+        app:layout_constraintStart_toEndOf="@+id/cardImageItemContainer"
+        app:layout_constraintTop_toTopOf="@+id/cardImageItemContainer"
+        tools:text="@tools:sample/lorem" />
+
+    <TextView
+        android:id="@+id/textDateEvent"
+        android:layout_width="@dimen/uiSize_0dp"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/event_date_content_description"
+        android:padding="@dimen/padding_extra_small"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/textSize_14sp"
+        app:layout_constraintEnd_toEndOf="@id/textTitleEvent"
+        app:layout_constraintStart_toStartOf="@+id/textTitleEvent"
+        app:layout_constraintTop_toBottomOf="@+id/textTitleEvent"
+        tools:text="@tools:sample/lorem" />
+
+    <TextView
+        android:id="@+id/textEventLocation"
+        android:layout_width="@dimen/uiSize_0dp"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/event_location_content_description"
+        android:padding="@dimen/padding_extra_small"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/textSize_14sp"
+        app:layout_constraintEnd_toEndOf="@id/textDateEvent"
+        app:layout_constraintStart_toStartOf="@+id/textDateEvent"
+        app:layout_constraintTop_toBottomOf="@+id/textDateEvent"
+        tools:text="@tools:sample/lorem" />
+
+    <TextView
+        android:id="@+id/textEventCityState"
+        android:layout_width="@dimen/uiSize_0dp"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/event_state_content_description"
+        android:padding="@dimen/padding_extra_small"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/textSize_12sp"
+        app:layout_constraintEnd_toEndOf="@id/textEventLocation"
+        app:layout_constraintStart_toStartOf="@+id/textEventLocation"
+        app:layout_constraintTop_toBottomOf="@+id/textEventLocation"
+        tools:text="@tools:sample/lorem" />
 </androidx.constraintlayout.widget.ConstraintLayout>

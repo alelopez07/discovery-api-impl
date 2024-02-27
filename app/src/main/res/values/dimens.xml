@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="uiSize_0dp">0dp</dimen>
+    <dimen name="uiSize_05dp">0.5dp</dimen>
+    <dimen name="uiSize_1dp">1dp</dimen>
+    <dimen name="uiSize_2dp">2dp</dimen>
+    <dimen name="uiSize_4dp">4dp</dimen>
+    <dimen name="uiSize_7dp">7dp</dimen>
+    <dimen name="uiSize_8dp">8dp</dimen>
+    <dimen name="uiSize_10dp">10dp</dimen>
+    <dimen name="uiSize_15dp">15dp</dimen>
+    <dimen name="uiSize_16dp">16dp</dimen>
+    <dimen name="uiSize_20dp">20dp</dimen>
+    <dimen name="uiSize_24dp">24dp</dimen>
+    <dimen name="uiSize_25dp">25dp</dimen>
+    <dimen name="uiSize_38dp">38dp</dimen>
+    <dimen name="uiSize_42dp">42dp</dimen>
+    <dimen name="uiSize_50dp">50dp</dimen>
+    <dimen name="uiSize_64dp">64dp</dimen>
+    <dimen name="uiSize_72dp">72dp</dimen>
+    <dimen name="uiSize_90dp">90dp</dimen>
+    <dimen name="uiSize_248dp">248dp</dimen>
+    <dimen name="uiSize_256dp">256dp</dimen>
+    <dimen name="uiSize_264dp">264dp</dimen>
+
+    <dimen name="margin_extra_small">@dimen/uiSize_2dp</dimen>
+    <dimen name="margin_small">@dimen/uiSize_8dp</dimen>
+    <dimen name="margin_normal">@dimen/uiSize_16dp</dimen>
+    <dimen name="margin_large">@dimen/uiSize_24dp</dimen>
+
+    <dimen name="padding_extra_small">@dimen/uiSize_2dp</dimen>
+    <dimen name="padding_small">@dimen/uiSize_8dp</dimen>
+    <dimen name="padding_normal">@dimen/uiSize_16dp</dimen>
+    <dimen name="padding_large">@dimen/uiSize_24dp</dimen>
+
+    <dimen name="textSize_small">8sp</dimen>
+    <dimen name="textSize_10sp">10sp</dimen>
+    <dimen name="textSize_12sp">12sp</dimen>
+    <dimen name="textSize_14sp">14sp</dimen>
+    <dimen name="textSize_normal">16sp</dimen>
+    <dimen name="textSize_18sp">18sp</dimen>
+    <dimen name="textSize_20sp">20sp</dimen>
+    <dimen name="textSize_large">24sp</dimen>
+</resources>

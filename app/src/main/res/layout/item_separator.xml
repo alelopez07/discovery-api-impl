@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/black">
-
-    <TextView
+    android:layout_height="wrap_content">
+    <View
         android:id="@+id/textEventItem"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="2dp"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
+        android:layout_height="@dimen/uiSize_2dp"
+        android:background="@color/colorGray500"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="10000+ stars" />
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

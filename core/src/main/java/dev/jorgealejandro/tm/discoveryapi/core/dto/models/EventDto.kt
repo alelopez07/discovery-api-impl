@@ -1,6 +1,5 @@
 package dev.jorgealejandro.tm.discoveryapi.core.dto.models
 
-
 data class EventDto(
     val id: String,
     val name: String?,

@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Discovery API</string>
+    <!-- region accessibility -->
+    <string name="event_media_content_description">This is a graphic representation of the event.</string>
+    <string name="event_title_content_description">This is the title of the event.</string>
+    <string name="event_date_content_description">This is the date of the event.</string>
+    <string name="event_location_content_description">This is the location of the event.</string>
+    <string name="event_state_content_description">This could be either state or city of the event.</string>
+    <string name="load_state_content_description">Displays the load state message.</string>
+    <string name="load_state_button_retry_description">This button allows the user to retry the request.</string>
+    <!-- endregion accessibility -->
+
+    <string name="button_retry">Retry</string>
 </resources>
