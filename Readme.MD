@@ -1,0 +1,2 @@
+## Discovery API | Android Impl
+This project aims to implement the Ticketmaster Discovery API, providing developers with an avenue to create powerful applications that leverage event data in general. The goal is to create a fluid and easy-to-use API SDK that simplifies integration with the Ticketmaster API while adhering to best practices in Android development with the goal of reusing libraries to centralize processes or API calls.
