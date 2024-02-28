@@ -5,7 +5,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import dev.jorgealejandro.tm.discoveryapi.core.interactors.repository.EventsRepository
-import dev.jorgealejandro.tm.discoveryapi.core.interactors.usecase.GetAllEvents
 import dev.jorgealejandro.tm.discoveryapi.core.interactors.usecase.UseCases
 import dev.jorgealejandro.tm.discoveryapi.core.interactors.usecase.impl.GetAllEventsUseCase
 import dev.jorgealejandro.tm.discoveryapi.core.interactors.usecase.impl.GetCachedEventsUseCase
@@ -17,7 +16,7 @@ object UseCasesModule {
     @Provides
     fun provideGetAllEventsUseCase(
         impl: EventsRepository
-    ): GetAllEvents = GetAllEventsUseCase(impl)
+    ): UseCases.GetAllEvents = GetAllEventsUseCase(impl)
 
     @Provides
     fun provideCachedEventsUseCase(

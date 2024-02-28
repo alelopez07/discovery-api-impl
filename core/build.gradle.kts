@@ -40,6 +40,10 @@ android {
 dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
+
+    implementation(libs.room.runtime)
+    kapt(libs.room.compiler)
+
     implementation(libs.converter.gson)
     implementation(libs.paging)
     implementation(libs.core.ktx)

@@ -4,7 +4,9 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.paging.RemoteMediator
 import dev.jorgealejandro.tm.discoveryapi.core.dto.constants.ApiConstants
+import dev.jorgealejandro.tm.discoveryapi.core.dto.entities.EventDataEntity
 import dev.jorgealejandro.tm.discoveryapi.core.dto.models.EventDto
 import dev.jorgealejandro.tm.discoveryapi.core.interactors.repository.EventsRepository
 import dev.jorgealejandro.tm.discoveryapi.data.local.AppDatabase
@@ -20,29 +22,33 @@ class EventsRepositoryImpl @Inject constructor(
 ) : EventsRepository {
 
     @OptIn(ExperimentalPagingApi::class)
-    override suspend fun getPagedFetchedEvents(params: GetAllEventsParams):
-            Flow<PagingData<EventDto>> {
-
+    override fun getPagedFetchedEvents(params: GetAllEventsParams):
+            Flow<PagingData<EventDataEntity>> {
         val origin = ApiConstants.GET_EVENTS
-        val queries = params.queries.joinToString(separator = "&") { (key, value) ->
+        var queries = params.queries.joinToString(separator = "&") { (key, value) ->
             "$key=$value"
         }
+
+        var customSource = { db.eventDao().getPagingSource() }
+
+        params.keyword?.let { query ->
+            queries += "&keyword=$query"
+            customSource = { db.eventDao().eventsByName(query) }
+        }
+
+        val mediator: RemoteMediator<Int, EventDataEntity> =
+            EventDataMediator(origin, queries, api, db)
 
         return Pager(
             config = PagingConfig(
                 pageSize = PAGE_SIZE,
-                maxSize = PAGE_SIZE + (PAGE_SIZE * 2),
-                enablePlaceholders = false
+                initialLoadSize = PAGE_SIZE * 2,
+                prefetchDistance = PAGE_SIZE * 3,
+                enablePlaceholders = true
             ),
-            remoteMediator = EventDataMediator(
-                origin,
-                queries,
-                api,
-                db
-            )
-        ) {
-            EventPagingSource(db)
-        }.flow
+            remoteMediator = mediator,
+            pagingSourceFactory = customSource
+        ).flow
     }
 
     @OptIn(ExperimentalPagingApi::class)

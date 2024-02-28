@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/margin_extra_small"
-    android:background="@android:color/transparent"
-    android:padding="@dimen/padding_small">
+    android:background="@android:color/white"
+    android:elevation="@dimen/uiSize_2dp"
+    android:paddingHorizontal="@dimen/padding_small"
+    android:paddingVertical="@dimen/padding_normal">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardImageItemContainer"
@@ -54,31 +55,65 @@
         app:layout_constraintTop_toTopOf="@+id/cardImageItemContainer"
         tools:text="@tools:sample/lorem" />
 
+    <ImageView
+        android:id="@+id/imageIcDate"
+        android:layout_width="@dimen/uiSize_16dp"
+        android:layout_height="@dimen/uiSize_16dp"
+        android:layout_marginTop="@dimen/margin_normal"
+        android:contentDescription="@string/event_date_ic_description"
+        app:layout_constraintStart_toStartOf="@+id/textTitleEvent"
+        app:layout_constraintTop_toBottomOf="@+id/textTitleEvent"
+        app:srcCompat="@drawable/ic_date" />
+
     <TextView
         android:id="@+id/textDateEvent"
         android:layout_width="@dimen/uiSize_0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_small"
         android:contentDescription="@string/event_date_content_description"
         android:padding="@dimen/padding_extra_small"
         android:textColor="@android:color/black"
         android:textSize="@dimen/textSize_14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageIcDate"
         app:layout_constraintEnd_toEndOf="@id/textTitleEvent"
-        app:layout_constraintStart_toStartOf="@+id/textTitleEvent"
-        app:layout_constraintTop_toBottomOf="@+id/textTitleEvent"
+        app:layout_constraintStart_toEndOf="@+id/imageIcDate"
+        app:layout_constraintTop_toTopOf="@+id/imageIcDate"
         tools:text="@tools:sample/lorem" />
+
+    <ImageView
+        android:id="@+id/imageIcVenue"
+        android:layout_width="@dimen/uiSize_16dp"
+        android:layout_height="@dimen/uiSize_16dp"
+        android:layout_marginTop="@dimen/margin_small"
+        android:contentDescription="@string/event_venue_ic_description"
+        app:layout_constraintStart_toStartOf="@+id/imageIcDate"
+        app:layout_constraintTop_toBottomOf="@+id/imageIcDate"
+        app:srcCompat="@drawable/ic_venue" />
 
     <TextView
         android:id="@+id/textEventLocation"
         android:layout_width="@dimen/uiSize_0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_small"
         android:contentDescription="@string/event_location_content_description"
         android:padding="@dimen/padding_extra_small"
         android:textColor="@android:color/black"
         android:textSize="@dimen/textSize_14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageIcVenue"
         app:layout_constraintEnd_toEndOf="@id/textDateEvent"
-        app:layout_constraintStart_toStartOf="@+id/textDateEvent"
-        app:layout_constraintTop_toBottomOf="@+id/textDateEvent"
+        app:layout_constraintStart_toEndOf="@+id/imageIcVenue"
+        app:layout_constraintTop_toTopOf="@+id/imageIcVenue"
         tools:text="@tools:sample/lorem" />
+
+    <ImageView
+        android:id="@+id/imageIcLocation"
+        android:layout_width="@dimen/uiSize_16dp"
+        android:layout_height="@dimen/uiSize_16dp"
+        android:layout_marginTop="@dimen/margin_small"
+        android:contentDescription="@string/event_location_ic_description"
+        app:layout_constraintStart_toStartOf="@+id/imageIcVenue"
+        app:layout_constraintTop_toBottomOf="@+id/imageIcVenue"
+        app:srcCompat="@drawable/ic_location" />
 
     <TextView
         android:id="@+id/textEventCityState"
@@ -88,8 +123,9 @@
         android:padding="@dimen/padding_extra_small"
         android:textColor="@android:color/black"
         android:textSize="@dimen/textSize_12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageIcLocation"
         app:layout_constraintEnd_toEndOf="@id/textEventLocation"
         app:layout_constraintStart_toStartOf="@+id/textEventLocation"
-        app:layout_constraintTop_toBottomOf="@+id/textEventLocation"
+        app:layout_constraintTop_toTopOf="@+id/imageIcLocation"
         tools:text="@tools:sample/lorem" />
 </androidx.constraintlayout.widget.ConstraintLayout>

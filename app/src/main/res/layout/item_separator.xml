@@ -6,8 +6,8 @@
     <View
         android:id="@+id/textEventItem"
         android:layout_width="0dp"
-        android:layout_height="@dimen/uiSize_2dp"
-        android:background="@color/colorGray500"
+        android:layout_height="@dimen/uiSize_1dp"
+        android:background="@color/colorGray50"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

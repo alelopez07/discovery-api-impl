@@ -1,16 +1,19 @@
 package dev.jorgealejandro.tm.discoveryapi.data.utils
 
-import dev.jorgealejandro.tm.discoveryapi.core.dto.response.EventResponse
-import dev.jorgealejandro.tm.discoveryapi.data.local.entities.EventEntity
+import dev.jorgealejandro.tm.discoveryapi.core.dto.entities.EventDataEntity
+import dev.jorgealejandro.tm.discoveryapi.core.dto.models.EventDto
 
-val List<EventResponse>.toDomain: List<EventEntity>
-    get() = this.map { response ->
-        EventEntity(
-            id = response.id ?: "-",
-            name = response.name,
-            type = response.type,
-            test = response.test,
-            url = response.url,
-            locale = response.locale
+val List<EventDataEntity>.toDto: List<EventDto>
+    get() = this.map { entity ->
+        EventDto(
+            id = entity.id,
+            name = entity.name,
+            type = entity.type,
+            url = entity.url,
+            locale = entity.locale,
+            imagePreview = entity.images.random().url,
+            date = entity.date,
+            venue = entity.venue,
+            location = entity.location
         )
     }

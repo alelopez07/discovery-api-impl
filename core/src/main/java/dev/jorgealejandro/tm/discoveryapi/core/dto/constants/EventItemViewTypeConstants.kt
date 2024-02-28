@@ -1,6 +1,6 @@
 package dev.jorgealejandro.tm.discoveryapi.core.dto.constants
 
 enum class EventItemViewTypeConstants {
-    ITEM_EVENT,
-    ITEM_SEPARATOR
+    ITEM_EVENT, // Represents an event item.
+    ITEM_SEPARATOR // Represents an separator item.
 }

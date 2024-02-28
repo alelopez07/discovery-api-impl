@@ -1,4 +1,4 @@
-package dev.jorgealejandro.tm.discoveryapi.data.local.entities
+package dev.jorgealejandro.tm.discoveryapi.core.dto.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

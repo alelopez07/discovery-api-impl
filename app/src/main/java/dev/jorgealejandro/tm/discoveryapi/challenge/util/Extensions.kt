@@ -1,6 +1,9 @@
 package dev.jorgealejandro.tm.discoveryapi.challenge.util
 
+import android.content.Context
 import android.graphics.Bitmap
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -112,4 +115,29 @@ fun ImageView.setImage(path: String?) {
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(this)
     }
+}
+
+/**
+ * [View.showKeyboard]
+ * Show a keyboard for View.
+ */
+fun View.showKeyboard() {
+    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    this.requestFocus()
+    imm.showSoftInput(this, 0)
+}
+
+
+/**
+ * [View.hideKeyboard]
+ * Hide the keyboard and returns whether it worked.
+ */
+fun View.hideKeyboard(): Boolean {
+    try {
+        val inputMethodManager =
+            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        return inputMethodManager.hideSoftInputFromWindow(windowToken, 0)
+    } catch (ignored: RuntimeException) {
+    }
+    return false
 }

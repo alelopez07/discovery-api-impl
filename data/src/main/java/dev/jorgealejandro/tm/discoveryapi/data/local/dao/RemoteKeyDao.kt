@@ -5,7 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import dev.jorgealejandro.tm.discoveryapi.core.dto.constants.EntityConstants
-import dev.jorgealejandro.tm.discoveryapi.data.local.entities.RemoteKeysEntity
+import dev.jorgealejandro.tm.discoveryapi.core.dto.entities.RemoteKeysEntity
 
 @Dao
 interface RemoteKeyDao {

@@ -3,6 +3,7 @@ package dev.jorgealejandro.tm.discoveryapi.core.interactors.usecase
 import dev.jorgealejandro.tm.discoveryapi.core.dto.base.BasePagedUseCase
 import dev.jorgealejandro.tm.discoveryapi.core.dto.base.BaseParams
 import dev.jorgealejandro.tm.discoveryapi.core.dto.base.BaseUseCase
+import dev.jorgealejandro.tm.discoveryapi.core.dto.entities.EventDataEntity
 import dev.jorgealejandro.tm.discoveryapi.core.dto.models.EventDto
 import dev.jorgealejandro.tm.discoveryapi.core.interactors.usecase.impl.GetAllEventsUseCase
 
@@ -18,11 +19,11 @@ import dev.jorgealejandro.tm.discoveryapi.core.interactors.usecase.impl.GetAllEv
  * or in your injection dependency structure.
  */
 interface UseCases {
-//    /**
-//     * [UseCases.GetAllEvents] - Obtain all the updated elements and place them in a
-//     * paginated structure.
-//     */
-//     interface GetAllEvents: BasePagedUseCase<GetAllEventsUseCase.Params, EventDto>
+    /**
+     * [UseCases.GetAllEvents] - Obtain all the updated elements and place them in a
+     * paginated structure.
+     */
+     interface GetAllEvents: BasePagedUseCase<GetAllEventsUseCase.Params, EventDataEntity>
 
     /**
      * [UseCases.GetCachedEvents] - Getting all the cached events and paginate it.

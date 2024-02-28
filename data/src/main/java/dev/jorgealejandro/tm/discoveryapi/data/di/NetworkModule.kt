@@ -44,6 +44,8 @@ object NetworkModule {
 
         val headerAuthorizationInterceptor = Interceptor { chain ->
             val request = chain.request()
+
+            // Build the url with the query parameter: apiKey.
             val url = request.url
                 .newBuilder()
                 .addQueryParameter(

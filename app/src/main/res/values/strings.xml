@@ -8,7 +8,13 @@
     <string name="event_state_content_description">This could be either state or city of the event.</string>
     <string name="load_state_content_description">Displays the load state message.</string>
     <string name="load_state_button_retry_description">This button allows the user to retry the request.</string>
+    <string name="event_list_description">List of events updated.</string>
+    <string name="event_location_ic_description">This is an icon to represent the location of event.</string>
+    <string name="event_venue_ic_description">This is an icon to represent the venue of event.</string>
+    <string name="event_date_ic_description">This is an icon to represent the date of event.</string>
     <!-- endregion accessibility -->
 
     <string name="button_retry">Retry</string>
+    <string name="text_search_event_hint">Search</string>
+    <string name="text_empty_events">No events.</string>
 </resources>

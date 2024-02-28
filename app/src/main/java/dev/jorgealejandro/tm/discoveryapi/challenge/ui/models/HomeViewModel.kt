@@ -8,11 +8,12 @@ import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.jorgealejandro.tm.discoveryapi.challenge.base.BaseViewModel
 import dev.jorgealejandro.tm.discoveryapi.challenge.ui.events.HomeUiEvents
+import dev.jorgealejandro.tm.discoveryapi.challenge.ui.states.DEFAULT_QUERY
+import dev.jorgealejandro.tm.discoveryapi.challenge.ui.states.HomeUiAction
 import dev.jorgealejandro.tm.discoveryapi.challenge.ui.states.HomeUiState
 import dev.jorgealejandro.tm.discoveryapi.challenge.util.UIEvent
 import dev.jorgealejandro.tm.discoveryapi.core.dto.constants.ConnectionStateConstants
 import dev.jorgealejandro.tm.discoveryapi.core.dto.models.EventUiItem
-import dev.jorgealejandro.tm.discoveryapi.core.interactors.usecase.GetAllEvents
 import dev.jorgealejandro.tm.discoveryapi.core.interactors.usecase.UseCases
 import dev.jorgealejandro.tm.discoveryapi.core.interactors.usecase.impl.GetAllEventsUseCase
 import dev.jorgealejandro.tm.discoveryapi.data.utils.NetworkConnection
@@ -25,29 +26,47 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val fetchEvents: GetAllEvents,
+    private val fetchEvents: UseCases.GetAllEvents,
     private val cachedEvents: UseCases.GetCachedEvents,
     private val network: NetworkConnection
 ) : BaseViewModel() {
 
     var pagingEventsFlow: Flow<PagingData<EventUiItem>>? = null
 
-    private val state = MutableStateFlow(HomeUiState())
+    private val state = MutableStateFlow(HomeUiState(uiAction = { HomeUiAction.NA }))
     var uiState: StateFlow<HomeUiState> = state
 
     init {
         state.update { _ ->
             HomeUiState(
                 isLoading = true,
-                connectionStatus =
-                if (network.networkAccess()) {
-                    ConnectionStateConstants.ONLINE
-                } else {
-                    ConnectionStateConstants.OFFLINE
-                }
+                connectionStatus = getConnectionStatus(),
+                uiAction = { HomeUiAction.ScrollAction(DEFAULT_QUERY) }
             )
         }
     }
+
+    val onUiAction: (HomeUiAction) -> Unit = { action ->
+        if (action is HomeUiAction.SearchAction) {
+            val newQuery = action.query
+            processingContent(newQuery)
+            state.update { _ ->
+                HomeUiState(
+                    isLoading = state.value.isLoading,
+                    query = newQuery,
+                    uiAction = { HomeUiAction.ScrollAction(newQuery) },
+                    connectionStatus = getConnectionStatus()
+                )
+            }
+        }
+    }
+
+    private fun getConnectionStatus() =
+        if (network.networkAccess()) {
+            ConnectionStateConstants.ONLINE
+        } else {
+            ConnectionStateConstants.OFFLINE
+        }
 
     override fun onUIEvent(event: UIEvent) {
         when (event) {
@@ -56,13 +75,12 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun processingContent() {
+    private fun processingContent(query: String? = null) {
         exec {
-            pagingEventsFlow = fetchEvents.invoke(
-                GetAllEventsUseCase.Params()
-            ).map { pagingData ->
-                pagingData.map { dto ->
-                    EventUiItem.EventItem(item = dto)
+            val params = GetAllEventsUseCase.Params(keyword = query)
+            pagingEventsFlow = fetchEvents.invoke(params).map { pagingData ->
+                pagingData.map { event ->
+                    EventUiItem.EventItem(item = event.toDto)
                 }.insertSeparators { before, after ->
                     when {
                         before == null -> EventUiItem.Separator("HEADER")
@@ -77,5 +95,4 @@ class HomeViewModel @Inject constructor(
             }.cachedIn(viewModelScope)
         }
     }
-
 }

@@ -1,24 +1,28 @@
 package dev.jorgealejandro.tm.discoveryapi.challenge.ui.components
 
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import dev.jorgealejandro.tm.discoveryapi.challenge.databinding.FragmentHomeBinding
 import dev.jorgealejandro.tm.discoveryapi.challenge.ui.adapters.EventLoadStateAdapter
 import dev.jorgealejandro.tm.discoveryapi.challenge.ui.adapters.EventsAdapter
 import dev.jorgealejandro.tm.discoveryapi.challenge.ui.events.HomeUiEvents
 import dev.jorgealejandro.tm.discoveryapi.challenge.ui.models.HomeViewModel
-import dev.jorgealejandro.tm.discoveryapi.challenge.ui.states.DataPresentationState
-import dev.jorgealejandro.tm.discoveryapi.challenge.util.asRemotePresentationState
+import dev.jorgealejandro.tm.discoveryapi.challenge.ui.states.HomeUiAction
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -42,23 +46,56 @@ class HomeFragment : Fragment() {
     }
 
     private fun bindComponents() {
-        lifecycleScope.launch {
-            viewModel.uiState.collectLatest { state ->
-                // To handle the UI $state
+        val eventAdapter = EventsAdapter(viewModel)
+
+        binding.textSearchEvent.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_GO) {
+                refreshEventsFromSearch()
+                true
+            } else {
+                false
             }
         }
 
-        val eventAdapter = EventsAdapter(viewModel)
+        binding.textSearchEvent.setOnKeyListener { _, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                refreshEventsFromSearch()
+                true
+            } else {
+                false
+            }
+        }
+
+        binding.eventList.addItemDecoration(
+            DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+        )
+
+        observeComponents(eventAdapter)
+    }
+
+    private fun observeComponents(
+        eventAdapter: EventsAdapter
+    ) {
         val header = EventLoadStateAdapter { eventAdapter.retry() }
+
         binding.eventList.adapter = eventAdapter.withLoadStateHeaderAndFooter(
             header = header,
             footer = EventLoadStateAdapter { eventAdapter.retry() }
         )
 
-        val notLoading = eventAdapter
-            .loadStateFlow
-            .asRemotePresentationState()
-            .map { it == DataPresentationState.PRESENTED }
+        binding.eventList.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (dy != 0) {
+                    viewModel.onUiAction(HomeUiAction.ScrollAction(viewModel.uiState.value.query))
+                }
+            }
+        })
+
+        lifecycleScope.launch {
+            viewModel.uiState.map { it.query }
+                .distinctUntilChanged()
+                .collect(binding.textSearchEvent::setText)
+        }
 
         lifecycleScope.launch {
             viewModel.pagingEventsFlow?.collectLatest(eventAdapter::submitData)
@@ -89,14 +126,28 @@ class HomeFragment : Fragment() {
                     ).show()
                 }
 
-                // -> When the list is empty
-                // binding.textEmptyList = state.refresh is LoadState.NotLoading && eventAdapter.itemCount == 0
-
                 // -> Show loading spinner (progress) during initial load or refresh.
-                // binding.progress.isVisible = state.mediator?.refresh is LoadState.Loading
+                binding.progressBarEventsContent.isVisible =
+                    state.mediator?.refresh is LoadState.Loading
 
                 // -> Show the retry state if initial load or refresh fails
-                // binding.buttonRetry.isVisible = state.mediator?.refresh is LoadState.Error && eventAdapter.itemCount == 0
+                binding.buttonRetryNoEvents.isVisible =
+                    state.mediator?.refresh is LoadState.Error && eventAdapter.itemCount == 0
+
+                // -> When the list is empty
+                binding.textEmptyEventList.isVisible =
+                    state.refresh is LoadState.NotLoading && eventAdapter.itemCount == 0
+            }
+        }
+    }
+
+    private fun refreshEventsFromSearch() {
+        binding.textSearchEvent.text.trim().let { query ->
+            if (query.isNotEmpty()) {
+                binding.eventList.scrollToPosition(0)
+                viewModel.onUiAction(
+                    HomeUiAction.SearchAction(query = query.toString().trim())
+                )
             }
         }
     }
