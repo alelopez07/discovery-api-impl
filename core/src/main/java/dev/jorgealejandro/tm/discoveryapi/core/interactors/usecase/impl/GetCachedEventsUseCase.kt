@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.flow
 class GetCachedEventsUseCase(
     private val repository: EventsRepository
 ) : UseCases.GetCachedEvents {
-    override suspend fun invoke(params: BaseParams): Flow<PagingData<EventDto>> =
+    override fun invoke(params: BaseParams): Flow<PagingData<EventDto>> =
         flow {
             emitAll(repository.getLocalPagedEvents())
         }

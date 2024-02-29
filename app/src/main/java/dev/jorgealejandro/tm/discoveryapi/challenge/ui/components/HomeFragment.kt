@@ -20,8 +20,11 @@ import dev.jorgealejandro.tm.discoveryapi.challenge.ui.adapters.EventLoadStateAd
 import dev.jorgealejandro.tm.discoveryapi.challenge.ui.adapters.EventsAdapter
 import dev.jorgealejandro.tm.discoveryapi.challenge.ui.events.HomeUiEvents
 import dev.jorgealejandro.tm.discoveryapi.challenge.ui.models.HomeViewModel
+import dev.jorgealejandro.tm.discoveryapi.challenge.ui.states.DataPresentationState
 import dev.jorgealejandro.tm.discoveryapi.challenge.ui.states.HomeUiAction
+import dev.jorgealejandro.tm.discoveryapi.challenge.util.asRemotePresentationState
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -42,15 +45,14 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.onUIEvent(HomeUiEvents.OnInitializeContent)
-        bindComponents()
+        bindComponents(onQueryChanged = viewModel.action)
+        bindObservables(onScrollChanged = viewModel.action)
     }
 
-    private fun bindComponents() {
-        val eventAdapter = EventsAdapter(viewModel)
-
+    private fun bindComponents(onQueryChanged: (HomeUiAction.SearchAction) -> Unit) {
         binding.textSearchEvent.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_GO) {
-                refreshEventsFromSearch()
+                refreshEventsFromSearch(onQueryChanged)
                 true
             } else {
                 false
@@ -59,7 +61,7 @@ class HomeFragment : Fragment() {
 
         binding.textSearchEvent.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                refreshEventsFromSearch()
+                refreshEventsFromSearch(onQueryChanged)
                 true
             } else {
                 false
@@ -70,12 +72,18 @@ class HomeFragment : Fragment() {
             DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
         )
 
-        observeComponents(eventAdapter)
+        lifecycleScope.launch {
+            viewModel.uiState
+                .map { it.query }
+                .distinctUntilChanged()
+                .collect(binding.textSearchEvent::setText)
+        }
     }
 
-    private fun observeComponents(
-        eventAdapter: EventsAdapter
+    private fun bindObservables(
+        onScrollChanged: (HomeUiAction.ScrollAction) -> Unit
     ) {
+        val eventAdapter = EventsAdapter(viewModel)
         val header = EventLoadStateAdapter { eventAdapter.retry() }
 
         binding.eventList.adapter = eventAdapter.withLoadStateHeaderAndFooter(
@@ -86,19 +94,34 @@ class HomeFragment : Fragment() {
         binding.eventList.addOnScrollListener(object: RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy != 0) {
-                    viewModel.onUiAction(HomeUiAction.ScrollAction(viewModel.uiState.value.query))
+                    viewModel.uiState.value.query?.let {
+                        onScrollChanged(HomeUiAction.ScrollAction(query = it))
+                    }
                 }
             }
         })
 
-        lifecycleScope.launch {
-            viewModel.uiState.map { it.query }
-                .distinctUntilChanged()
-                .collect(binding.textSearchEvent::setText)
-        }
+        val isNotLoading = eventAdapter.loadStateFlow
+            .asRemotePresentationState().map {
+                value -> value == DataPresentationState.REMOTE_LOADING
+            }
+
+        val hasNotScrolledForCurrentSearch = viewModel.uiState.map {
+            it.hasNotScrolledForCurrentSearch
+        }.distinctUntilChanged()
+
+        val shouldScrollToTop = combine(
+            isNotLoading,
+            hasNotScrolledForCurrentSearch,
+            Boolean::and
+        ).distinctUntilChanged()
+
 
         lifecycleScope.launch {
             viewModel.pagingEventsFlow?.collectLatest(eventAdapter::submitData)
+            shouldScrollToTop.collect { shouldScroll ->
+                if (shouldScroll) binding.eventList.scrollToPosition(0)
+            }
         }
 
         lifecycleScope.launch {
@@ -141,12 +164,14 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun refreshEventsFromSearch() {
+    private fun refreshEventsFromSearch(onQueryChanged: (HomeUiAction.SearchAction) -> Unit) {
         binding.textSearchEvent.text.trim().let { query ->
             if (query.isNotEmpty()) {
                 binding.eventList.scrollToPosition(0)
-                viewModel.onUiAction(
-                    HomeUiAction.SearchAction(query = query.toString().trim())
+                onQueryChanged(
+                    HomeUiAction.SearchAction(
+                        query = query.toString().trim()
+                    )
                 )
             }
         }

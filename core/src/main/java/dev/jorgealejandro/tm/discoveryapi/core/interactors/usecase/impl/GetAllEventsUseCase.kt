@@ -18,7 +18,7 @@ class GetAllEventsUseCase @Inject constructor(
     private val repository: EventsRepository
 ) : UseCases.GetAllEvents {
     @ExperimentalPagingApi
-    override suspend operator fun invoke(params: Params): Flow<PagingData<EventDataEntity>> =
+    override operator fun invoke(params: Params): Flow<PagingData<EventDataEntity>> =
         flow {
             emitAll(repository.getPagedFetchedEvents(params))
         }
