@@ -20,7 +20,7 @@ To work with the secrets.properties file, follow these steps:
 #### Project Structure
 
 The project follows the Clean Architecture principles and utilizes various Android libraries to ensure modularity, scalability, and maintainability. The architecture separates the application into layers, including presentation, domain, and data layers, to promote a clear separation of concerns.
-![diagram]("https://developer.android.com/static/topic/libraries/architecture/images/paging3-layered-lifecycle.png")
+<img src="https://developer.android.com/static/topic/libraries/architecture/images/paging3-layered-lifecycle.png"/>
 
 #### Libraries
 
