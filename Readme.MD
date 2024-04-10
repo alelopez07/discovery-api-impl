@@ -4,11 +4,11 @@ This project aims to implement the Ticketmaster Discovery API, providing develop
 ## Overview
 This repository contains an Android application developed with clean architecture, integrating the Ticketmaster Discovery API v2. The project leverages libraries such as Paging3, Room, Retrofit, Hilt, and follows the principles of Clean Architecture. The main feature implemented is the HomeFragment, which provides users with an updated list of events and an input search to discover new events.
 
-Ticketmaster Discovery API
+#### Ticketmaster Discovery API
 
 The Ticketmaster Discovery API v2 allows users to search for events, attractions, or venues. To access the API, an API key is required, which should be included in the secrets.properties file. The API key should be added as a query parameter in the API calls.
 
-API Key Setup
+#### API Key Setup
 
 To work with the secrets.properties file, follow these steps:
 
@@ -17,11 +17,12 @@ To work with the secrets.properties file, follow these steps:
     Add the sensitive keys or variables, such as the API key, to the secrets.properties file.
 
 
-Project Structure
+#### Project Structure
 
 The project follows the Clean Architecture principles and utilizes various Android libraries to ensure modularity, scalability, and maintainability. The architecture separates the application into layers, including presentation, domain, and data layers, to promote a clear separation of concerns.
+![diagram]("https://developer.android.com/static/topic/libraries/architecture/images/paging3-layered-lifecycle.png")
 
-Libraries Used
+#### Libraries
 
 The project integrates the following libraries:
 
@@ -30,12 +31,11 @@ The project integrates the following libraries:
     Retrofit: For making network requests to the Ticketmaster Discovery API.
     Hilt: For dependency injection to ensure a modular and testable codebase.
 
-
 Feature: HomeFragment
 
 The HomeFragment feature provides users with an updated list of events and an input search to discover new events. This feature leverages the capabilities of the Ticketmaster Discovery API to fetch and display event data.
 
-Getting Started
+### Getting Started
 
 To run the project locally, follow these steps:
 
@@ -44,14 +44,8 @@ To run the project locally, follow these steps:
     Build and run the project using Android Studio or the command line.
 
 
-Contribution Guidelines
+### Contribution Guidelines
 
-Contributions to the project are welcome. If you would like to contribute, please follow the contribution guidelines outlined in the repository.
-
-License
-
-The project is licensed under [insert license type]. For more details, refer to the LICENSE.txt file in the repository.
-
-By providing comprehensive details about the project, its features, and the Ticketmaster Discovery API integration, this README aims to offer users a clear understanding of the repository and its purpose.
+Contributions to the project are welcome. If you would like to contribute, please follow the contribution guidelines outlined in the repository. By providing comprehensive details about the project, its features, and the Ticketmaster Discovery API integration, this README aims to offer users a clear understanding of the repository and its purpose.
 
 If you have any further questions or need additional information, feel free to reach out.
